@@ -1,6 +1,8 @@
 const { Model, DataTypes } = require('sequelize');
+//bringing in sequelize from connection.js
 const sequelize = require('../config/connection');
-const bcrypt = require('bcrypt');
+//brining in package for password protection
+const bcrypt = require('bcrypt')
 
 class User extends Model { }
 
@@ -22,7 +24,7 @@ User.init(
             allowNull: false
         },
         email: {
-            //user email must be unique and must be validated that it is an email.com
+            //user email must be unique and must be validated that it is an email.com -tb
             type: DataTypes.STRING,
             allowNull: false,
             unique: true, 
@@ -30,7 +32,7 @@ User.init(
                 isEmail: true,
             }
         },
-        //user password must be min 8 characters long.
+        //user password must be min 8 characters long. -tb
         password: {
             type: DataTypes.STRING,
             allowNull: false,
@@ -41,6 +43,7 @@ User.init(
     },
     {
         hooks: {
+            //using hook for password protection
             beforeCreate: async (newUserData) => {
                 newUserData.password = await bcrypt.hash(newUserData.password, 8);
                 return newUserData;

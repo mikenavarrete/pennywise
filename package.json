@@ -9,7 +9,7 @@
     "seed": "node seeds/seeds.js"
   },
   "keywords": [],
-  "author": "Julian Ortiz, Marco, Michael Navarrete, Tamer Bekir",
+  "author": "Julian Ortiz, Marco Franco, Michael Navarrete, Tamer Bekir",
   "license": "MIT",
   "dependencies": {
     "bcrypt": "^5.1.1",
@@ -27,5 +27,4 @@
   "devDependencies": {
     "nodemon": "^3.1.0"
   }
-  
 }
