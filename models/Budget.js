@@ -1,39 +1,32 @@
-const { Model, Datatypes } = require('sequelize')
-const sequelize = require('../config/connection')
+const { Model, DataTypes } = require('sequelize'); // DataTypes should be capitalized
+const sequelize = require('../config/connection');
 
-class Budget extends Model { }
+class Budget extends Model {}
 
 Budget.init(
     {
         id: {
-            type: Datatypes.INTEGER,
+            type: DataTypes.INTEGER,
             allowNull: false,
             primaryKey: true,
-            autoIncrement: true
-        }
-    },
-    {
+            autoIncrement: true,
+        },
         title: {
-            type: Datatypes.STRING,
-            allowNull: false
-        }
-    },
-    {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
         totalAmount: {
-            type: Datatypes.DECIMAL,
-            allowNull: false
-        }
-    },
-    {
-        //the userId will be associated with the Budget model, using the primary key from the id in the User model
+            type: DataTypes.DECIMAL,
+            allowNull: false,
+        },
         user_id: {
-            type: Datatypes.INTEGER,
+            type: DataTypes.INTEGER,
             allowNull: false,
             references: {
                 model: 'user',
-                key: 'id'
-            }
-        }
+                key: 'id',
+            },
+        },
     },
     {
         sequelize,
@@ -42,6 +35,6 @@ Budget.init(
         underscored: true,
         modelName: 'budget',
     }
-)
+);
 
 module.exports = Budget;

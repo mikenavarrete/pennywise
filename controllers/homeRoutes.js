@@ -1,61 +1,26 @@
-const { Model, DataTypes } = require('sequelize');
-const sequelize = require('../config/connection');
-const bcrypt = require('bcrypt');
+//homeRouter for GET requests and rendering pages -tb
 
-class User extends Model { }
+//bringing in express packages for routes -tb
+const router = require('express').Router()
+//bringing in models -tb
+const { User, Budget, Category } = require('../models')
+//bringing in helper -tb
+const withAuth = require('../utils/auth')
 
-//user model
-User.init(
-    {
-        id: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            primaryKey: true,
-            autoIncrement: true
-        },
-        firstName: {
-            type: DataTypes.STRING,
-            allowNull: false,
-        },
-        lastName: {
-            type: DataTypes.STRING,
-            allowNull: false
-        },
-        email: {
-            //user email must be unique and must be validated that it is an email.com
-            type: DataTypes.STRING,
-            allowNull: false,
-            unique: true, 
-            validate: {
-                isEmail: true,
-            }
-        },
-        //user password must be min 8 characters long.
-        password: {
-            type: DataTypes.STRING,
-            allowNull: false,
-            validate: {
-                len: [8],
-            },
-        }
-    },
-    {
-        hooks: {
-            beforeCreate: async (newUserData) => {
-                newUserData.password = await bcrypt.hash(newUserData.password, 8);
-                return newUserData;
-            },
-            beforeUpdate: async (updatedUserData) => {
-                updatedUserData.password = await bcrypt.hash(updatedUserData.password, 8);
-                return updatedUserData;
-            },
-        },
-        sequelize,
-        timestamps: false,
-        freezeTableName: true,
-        underscored: true,
-        modelName: 'user',
+
+router.get('/', withAuth, (req, res) => {
+    res.render('homepage', { loggedIn: req.session.loggedIn });
+});
+
+//renders the login page to the user
+// if user is logged in they will go to their dashboard, otherwise they see the login page again
+router.get('/login', (req, res) => {
+    if (req.session.loggedIn) {
+        res.redirect('/homepage');
+    } else {
+        res.render('/login');
     }
-);
+});
 
-module.exports = User;
+
+module.exports = router;
