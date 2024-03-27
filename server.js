@@ -9,11 +9,11 @@ const exphbs = require('express-handlebars');
 //package for using express sessions
 const sessions = require('express-session')
 //brought in helpers
-const dateHelpers = require('./utils/helpers');
+const dateHelpers = require('./utils/auth');
 
 
 //grabbing the routes from the homeRoute folder
-const routes = require('./controllers/homeRoutes')
+const routes = require('./controllers')
 
 //package for sequelize
 const SequelizeStore = require('connect-session-sequelize')(sessions.Store)
