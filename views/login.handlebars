@@ -1,42 +1,48 @@
-<div class="row">
-    <div class="col-md-6">
-        <h2>Login</h2>
-
-        <form class="form login-form">
-            <div class="form-group">
-                <label for="email-login">email:</label>
-                <input class="form-input" type="text" id="email-login" />
-            </div>
-            <div class="form-group">
-                <label for="password-login">password:</label>
-                <input class="form-input" type="password" id="password-login" />
-            </div>
-            <div class="form-group">
-                <button class="btn btn-primary" type="submit">login</button>
-            </div>
-        </form>
-    </div>
-    <div class="col-md-6">
-        <h2>Signup</h2>
-
-        <form class="form signup-form">
-            <div class="form-group">
-                <label for="name-signup">name:</label>
-                <input class="form-input" type="text" id="name-signup" />
-            </div>
-            <div class="form-group">
-                <label for="email-signup">email:</label>
-                <input class="form-input" type="text" id="email-signup" />
-            </div>
-            <div class="form-group">
-                <label for="password-signup">password:</label>
-                <input class="form-input" type="password" id="password-signup" />
-            </div>
-            <div class="form-group">
-                <button class="btn btn-primary" type="submit">signup</button>
-            </div>
-        </form>
+<div class="d-flex justify-content-center flex-column">
+    <img src="/images/logo.png" alt="Logo" class="logo" />
+    <div class="d-flex flex-column justify-content-center align-items-center">
+        <div id="buttonsContainer" class="d-flex justify-content-center text-center mb-5">
+            <button id="showLogin" class="btn btn-primary m-2">Login</button>
+            <button id="showSignup" class="btn btn-secondary m-2">Sign Up</button>
+        </div>
+        <div id="loginForm" class="form-container" style="display: none;">
+    <span id="backFromLogin" class="back-arrow"><i class="fas fa-times"></i></span>
+    <h2>Login</h2>
+            <form class="form login-form">
+                <div class="form-group">
+                    <label for="email-login">Email:</label>
+                    <input type="text" class="form-control" id="email-login" />
+                </div>
+                <div class="form-group">
+                    <label for="password-login">Password:</label>
+                    <input type="password" class="form-control" id="password-login" />
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-primary" type="submit">Login</button>
+                </div>
+            </form>
+        </div>
+        <div id="signupForm" class="form-container" style="display: none;">
+    <span id="backFromSignup" class="back-arrow"><i class="fas fa-times"></i></span>
+    <h2>Sign Up</h2>
+            <form class="form signup-form">
+                <div class="form-group">
+                    <label for="name-signup">Name:</label>
+                    <input type="text" class="form-control" id="name-signup" />
+                </div>
+                <div class="form-group">
+                    <label for="email-signup">Email:</label>
+                    <input type="text" class="form-control" id="email-signup" />
+                </div>
+                <div class="form-group">
+                    <label for="password-signup">Password:</label>
+                    <input type="password" class="form-control" id="password-signup" />
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-primary" type="submit">Signup</button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
-
-<script src="../public/js/login.js"></script>
+    <script src="/js/login.js"></script>

@@ -1,5 +1,5 @@
-header, .project:not(:last-child) {
-  border-bottom: 1px solid #ccc;
+body {
+  background-color: beige !important;
 }
 
 .no-button {
@@ -21,4 +21,61 @@ header, .project:not(:last-child) {
   color: #056605;
   font-weight: bold;
   margin-left: -5px;
+}
+
+img {
+  height: 100px;
+  display: flex;
+  justify-content: center !important;
+  align-items: center;
+  margin-bottom: 50px;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.form-container {
+  position: relative;
+  /* Other styling for the form, ensuring it doesn't cover the full page width */
+  max-width: 400px; /* Example width, adjust as needed */
+  margin: auto; /* Center the form if it doesn't fill the width of its container */
+}
+
+.back-arrow {
+  cursor: pointer;
+  position: absolute;
+  top: 10px;
+  right: 10px; /* Positions the cross inside the top-right corner of .form-container */
+  font-size: 24px; /* Adjust size as needed */
+}
+
+#showLogin, #showSignup {
+  width: 100px;
+}
+
+#showLogin {
+  background-color: #793842;
+  border-color: #793842;
+}
+
+#showLogin:hover {
+  background-color: #febaaf;
+  border-color: #febaaf;
+  color: #793842;
+}
+
+#showSignup {
+  background-color: beige;
+  border: solid 2px #793842;
+  color: #793842;
+}
+
+#showSignup:hover {
+  background-color: #febaaf;
+  border-color: #febaaf;
+  color: #793842;
 }
