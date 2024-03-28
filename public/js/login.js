@@ -7,36 +7,35 @@ document.addEventListener('DOMContentLoaded', () => {
   const backFromSignup = document.getElementById('backFromSignup');
   const buttonsContainer = document.getElementById('buttonsContainer');
 
-  // Function to toggle visibility
-  function toggleVisibility(element, show) {
-    element.style.display = show ? 'block' : 'none';
+  function hideElement(element) {
+    element.classList.add('d-none');
   }
 
-  // Show login form
+  function showElement(element) {
+    element.classList.remove('d-none');
+  }
+
   showLoginForm.addEventListener('click', () => {
-    toggleVisibility(buttonsContainer, false);
-    toggleVisibility(loginForm, true);
-    toggleVisibility(signupForm, false);
+    hideElement(buttonsContainer);
+    showElement(loginForm);
   });
 
-  // Show signup form
   showSignupForm.addEventListener('click', () => {
-    toggleVisibility(buttonsContainer, false);
-    toggleVisibility(signupForm, true);
-    toggleVisibility(loginForm, false);
+    hideElement(buttonsContainer);
+    showElement(signupForm);
   });
 
-  // Return to initial buttons view from login
   backFromLogin.addEventListener('click', () => {
-    toggleVisibility(loginForm, false);
-    toggleVisibility(buttonsContainer, true);
+    showElement(buttonsContainer);
+    hideElement(loginForm);
   });
 
-  // Return to initial buttons view from signup
   backFromSignup.addEventListener('click', () => {
-    toggleVisibility(signupForm, false);
-    toggleVisibility(buttonsContainer, true);
+    showElement(buttonsContainer);
+    hideElement(signupForm);
   });
+});
+
 
   // Login form submission handling
   document.querySelector('.login-form').addEventListener('submit', async (event) => {
@@ -62,4 +61,4 @@ document.addEventListener('DOMContentLoaded', () => {
     // Example: redirect on success
     // window.location.href = '/profile';
   });
-});
+;

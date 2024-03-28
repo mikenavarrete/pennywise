@@ -1,13 +1,13 @@
 <div class="d-flex justify-content-center flex-column">
-    <img src="/images/logo.png" alt="Logo" class="logo" />
+    <img src="/images/logo.png" alt="Logo" class="logo mb-5" />
     <div class="d-flex flex-column justify-content-center align-items-center">
         <div id="buttonsContainer" class="d-flex justify-content-center text-center mb-5">
             <button id="showLogin" class="btn btn-primary m-2">Login</button>
             <button id="showSignup" class="btn btn-secondary m-2">Sign Up</button>
         </div>
-        <div id="loginForm" class="form-container" style="display: none;">
-    <span id="backFromLogin" class="back-arrow"><i class="fas fa-times"></i></span>
-    <h2>Login</h2>
+        <div id="loginForm" class="form-container d-none">
+            <span id="backFromLogin" class="back-arrow"><i class="fas fa-times"></i></span>
+            <h2>Login</h2>
             <form class="form login-form">
                 <div class="form-group">
                     <label for="email-login">Email:</label>
@@ -22,9 +22,9 @@
                 </div>
             </form>
         </div>
-        <div id="signupForm" class="form-container" style="display: none;">
-    <span id="backFromSignup" class="back-arrow"><i class="fas fa-times"></i></span>
-    <h2>Sign Up</h2>
+        <div id="signupForm" class="form-container d-none">
+            <span id="backFromSignup" class="back-arrow"><i class="fas fa-times"></i></span>
+            <h2>Sign Up</h2>
             <form class="form signup-form">
                 <div class="form-group">
                     <label for="name-signup">Name:</label>
@@ -45,4 +45,4 @@
         </div>
     </div>
 </div>
-    <script src="/js/login.js"></script>
+<script src="/js/login.js"></script>

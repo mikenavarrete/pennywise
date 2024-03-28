@@ -48,8 +48,8 @@ img {
 .back-arrow {
   cursor: pointer;
   position: absolute;
-  top: 10px;
-  right: 10px; /* Positions the cross inside the top-right corner of .form-container */
+  top: 5px;
+  right: 0px; /* Positions the cross inside the top-right corner of .form-container */
   font-size: 24px; /* Adjust size as needed */
 }
 
@@ -78,4 +78,22 @@ img {
   background-color: #febaaf;
   border-color: #febaaf;
   color: #793842;
+}
+
+.hidden-important {
+  display: none !important;
+}
+
+#loginForm button, #signupForm button {
+  background-color: #793842;
+  border: solid 2px #793842;
+  width: 100px;
+  margin-top: 10px;
+}
+
+#loginForm button:hover, #signupForm button:hover {
+  background-color: #febaaf;
+  border-color: #febaaf;
+  color: #793842;
+  width: 100px;
 }
