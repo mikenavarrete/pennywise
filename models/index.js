@@ -6,7 +6,7 @@ const Category = require('./Category');
 
 // The user will have many budgets. The foreign key from the Budget model that references the id in the Users model
 User.hasMany(Budget, {
-    foreignKey: 'user_Id'
+    foreignKey: 'user_id'
 })
 
 // The user will have many goals. The foreign key from the Goal model that references the id in the Users model

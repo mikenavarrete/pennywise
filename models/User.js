@@ -19,14 +19,11 @@ User.init(
             primaryKey: true,
             autoIncrement: true
         },
-        firstName: {
+        username: {
             type: DataTypes.STRING,
             allowNull: false,
         },
-        lastName: {
-            type: DataTypes.STRING,
-            allowNull: false
-        },
+
         email: {
             //user email must be unique and must be validated that it is an email.com -tb
             type: DataTypes.STRING,
@@ -49,11 +46,11 @@ User.init(
         hooks: {
             //using hook for password protection
             beforeCreate: async (newUserData) => {
-                newUserData.password = await bcrypt.hash(newUserData.password, 8);
+                newUserData.password = await bcrypt.hash(newUserData.password, 10);
                 return newUserData;
             },
             beforeUpdate: async (updatedUserData) => {
-                updatedUserData.password = await bcrypt.hash(updatedUserData.password, 8);
+                updatedUserData.password = await bcrypt.hash(updatedUserData.password, 10);
                 return updatedUserData;
             },
         },
