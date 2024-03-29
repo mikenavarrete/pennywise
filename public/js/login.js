@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (email && password) {
       // Send a POST request to the API endpoint
-      const response = await fetch('/api/users/login', {
+      const response = await fetch('/api/user/login', {
         method: 'POST',
         body: JSON.stringify({ email, password }),
         headers: { 'Content-Type': 'application/json' },
@@ -63,18 +63,18 @@ document.addEventListener('DOMContentLoaded', () => {
   // Signup form submission handling
   document.querySelector('.signup-form').addEventListener('submit', async (event) => {
     event.preventDefault();
-    const name = document.querySelector('#name-signup').value.trim();
+    event.stopPropagation();
+    const username = document.querySelector('#name-signup').value.trim();
     const email = document.querySelector('#email-signup').value.trim();
     const password = document.querySelector('#password-signup').value.trim();
 
-    if (name && email && password) {
-      const response = await fetch('/api/users', {
+    if (username && email && password) {
+      const response = await fetch('/api/user', {
         method: 'POST',
-        body: JSON.stringify({ name, email, password }),
+        body: JSON.stringify({ username, email, password }),
         headers: { 'Content-Type': 'application/json' },
       });
-  
-      if (response.ok) {
+      if (response.status===200) {
         document.location.replace('/dashboard');
       } else {
         alert(response.statusText);
@@ -82,6 +82,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  document
-    .querySelector('.login-form')
-    .addEventListener('submit', loginFormHandler);
+  // document
+  //   .querySelector('.login-form')
+  //   .addEventListener('submit', loginFormHandler);
