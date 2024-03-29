@@ -30,7 +30,6 @@ const hbs = exphbs.create({
     helpers: dateHelpers,
 });
 
-app.engine('handlebars', exphbs({ defaultLayout: 'main' }))
 app.set('view engine', 'handlebars')
 
 
