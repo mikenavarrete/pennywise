@@ -95,3 +95,11 @@ header #logout {
   color: #793842;
   width: 100px;
 }
+
+.d-none {
+  display: none !important;
+}
+
+.hidden {
+  display: none !important;
+}
