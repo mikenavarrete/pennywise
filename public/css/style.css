@@ -151,9 +151,13 @@ main {
   width: 200px !important;
 }
 
+#loginForm .form-control, #signupForm .form-control {
+  margin-bottom: 10px !important;
+}
+
 @media screen and (max-width: 400px) {
   main {
-    padding-top: 200px; /* Adjust based on the actual height of your header */
+    padding-top: 550px; /* Adjust based on the actual height of your header */
   }
 
   .input-group-text, .form-control {
@@ -170,6 +174,14 @@ main {
 
 .form-control {
   font-size: .8rem !important;
+}
+
+.back-arrow {
+  cursor: pointer;
+  position: absolute;
+  top: 0px;
+  right: 0px; /* Positions the cross inside the top-right corner of .form-container */
+  font-size: 24px; /* Adjust size as needed */
 }
 
 }
