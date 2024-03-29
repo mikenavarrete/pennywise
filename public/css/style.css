@@ -2,33 +2,31 @@ body {
   background-color: beige !important;
 }
 
-.no-button {
-  background: none;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-  color: #1b89bc;
-  text-decoration: none;
-  font-size: 100%;
-}
-
-.no-button:hover {
-  color: #065b83;
-  text-decoration: underline;
-}
-
-.dollar-amount {
-  color: #056605;
-  font-weight: bold;
-  margin-left: -5px;
-}
-
-img {
+#logo {
   height: 100px;
   display: flex;
   justify-content: center !important;
   align-items: center;
   margin-bottom: 50px;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+}
+
+header img {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  padding: 20px;
+  height: 100px;
+}
+
+header #logout {
+  position: fixed;
+  top: 20px;
+  right: 20px;
 }
 
 .container {
@@ -68,13 +66,13 @@ img {
   color: #793842;
 }
 
-#showSignup {
+#showSignup, #logout {
   background-color: beige;
   border: solid 2px #793842;
   color: #793842;
 }
 
-#showSignup:hover {
+#showSignup:hover, #logout:hover {
   background-color: #febaaf;
   border-color: #febaaf;
   color: #793842;
