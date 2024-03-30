@@ -3,9 +3,20 @@
   --secondary: #febaaf;
 }
 
-body {
+html, body {
+  height: 100%;
+  overflow-y: auto;
   background-color: beige !important;
 }
+
+header {
+  position: fixed;
+  width: 100%;
+  top: 0;
+  background: #ddd;
+  z-index: 10;
+}
+
 
 #logo {
   height: 100px;
@@ -36,11 +47,19 @@ header #logout {
   right: 20px;
 }
 
+
+
+/* Remove the fixed height on the container to allow for dynamic content length */
 .container {
   display: flex;
   justify-content: center;
-  align-items: center;
-  height: 100vh;
+  align-items: flex-start; /* Align items at the start of the container */
+  min-height: 100vh; /* Ensure it takes at least the viewport height */
+  padding-top: 180px; /* Adjust based on your actual header height */
+}
+
+#login-page {
+  padding-top: 0px !important;
 }
 
 .form-container {
@@ -62,16 +81,16 @@ header #logout {
   width: 100px;
 }
 
-#new-category {
+#add-category-btn {
   width: 150px;
 }
 
-#showLogin, #new-category {
+#showLogin, #add-category-btn {
   background-color: var(--primary);
   border-color: var(--primary);
 }
 
-#showLogin:hover, #new-category:hover {
+#showLogin:hover, #add-category-btn:hover {
   background-color: var(--secondary);
   border-color: var(--secondary);
   color: var(--primary);
@@ -99,7 +118,7 @@ header #logout {
   display: none !important;
 }
 
-#loginForm button, #signupForm button, #new-category button {
+#loginForm button, #signupForm button, #add-category-btn button {
   background-color: var(--primary);
   border: solid 2px var(--primary);
   width: 100px;
@@ -140,11 +159,7 @@ ul {
 }
 
 .form-label {
-  margin-bottom: 1.1rem !important;
-}
-
-main {
-  padding-top: 120px; /* Adjust based on the actual height of your header */
+  margin-top: .3rem;
 }
 
 .input-group {
@@ -156,20 +171,28 @@ main {
 }
 
 @media screen and (max-width: 400px) {
+  header {
+    position: fixed;
+    width: 100%;
+    z-index: 1000; /* Keeps the header above other content */
+  }
+  
   main {
-    padding-top: 550px; /* Adjust based on the actual height of your header */
+    padding-top: 100px; /* Adjust this based on the actual height of your header */
   }
 
   .input-group-text, .form-control {
     font-size: 0.8rem; /* Reduce font size */
 }
+
 .form-label {
+    margin-top: .6rem;
     margin-right: 0.5rem; /* Reduce margin */
     font-size: 0.8rem; /* Reduce font size */
 }
 
 .input-group {
-  width: 150px !important;
+  width: 165px !important;
 }
 
 .form-control {
