@@ -1,257 +1,39 @@
 <header>
   <img src="/images/logo.png" alt="Logo" class="logo mb-5" />
   <button id="logout" class="btn btn-secondary m-2">
-    <i class="fa-solid fa-arrow-right-from-bracket"></i>
-    Logout
+    <i class="fa-solid fa-arrow-right-from-bracket"></i> Logout
   </button>
 </header>
 
 <main class="container">
   <div id="dashboard-content" class="col-12 row">
-    <!-- First Column (4 grid spaces on md screens and above) -->
+    <!-- Budget Column -->
     <div class="col-md-4">
       <div class="card p-4 m-1">
         <h5>Define your budget for:</h5>
-        <div class="col-md-12 d-flex justify-content-between">
-          <label
-            for="housing"
-            class="form-label me-2 align-self-center"
-          >Housing:</label>
-          <div class="input-group mb-3 custom-input-group">
-            <!-- Adjust width as needed -->
-            <span class="input-group-text"><strong><span
-                  style="color:#793842;"
-                >$</span></strong></span>
-            <input
-              type="text"
-              class="form-control"
-              id="housing"
-              name="housing"
-              pattern="\d+(\.\d{2})?"
-              title="Housing"
-              placeholder="0.00"
-              aria-label="Dollar amount (with dot and two decimal places)"
-            />
-          </div>
+        <div id="budget-categories">
+          <!-- Default Categories will be added by JavaScript -->
         </div>
-
-        <div class="col-md-12 d-flex justify-content-between">
-          <label
-            for="transportation"
-            class="form-label me-2 align-self-center"
-          >Transportation:</label>
-          <div class="input-group mb-3 custom-input-group">
-            <!-- Adjust width as needed -->
-            <span class="input-group-text"><strong><span
-                  style="color:#793842;"
-                >$</span></strong></span>
-            <input
-              type="text"
-              class="form-control"
-              id="transportation"
-              name="transportation"
-              pattern="\d+(\.\d{2})?"
-              title="Transportation"
-              placeholder="0.00"
-              aria-label="Dollar amount (with dot and two decimal places)"
-            />
-          </div>
+        <div id="add-category-section" class="mt-4">
+          <input type="text" id="new-category-name" class="form-control mb-2" placeholder="Enter new category name">
+          <button id="add-category-btn" class="btn btn-primary"><i class="fa-solid fa-plus"></i> New Category</button>
         </div>
-
-        <div class="col-md-12 d-flex justify-content-between">
-          <label
-            for="dining"
-            class="form-label me-2 align-self-center"
-          >Dining:</label>
-          <div class="input-group mb-3 custom-input-group">
-            <!-- Adjust width as needed -->
-            <span class="input-group-text"><strong><span
-                  style="color:#793842;"
-                >$</span></strong></span>
-            <input
-              type="text"
-              class="form-control"
-              id="dining"
-              name="dining"
-              pattern="\d+(\.\d{2})?"
-              title="Dining"
-              placeholder="0.00"
-              aria-label="Dollar amount (with dot and two decimal places)"
-            />
-          </div>
-        </div>
-
-        <div class="col-md-12 d-flex justify-content-between">
-          <label
-            for="groceries"
-            class="form-label me-2 align-self-center"
-          >Groceries:</label>
-          <div class="input-group mb-3 custom-input-group">
-            <!-- Adjust width as needed -->
-            <span class="input-group-text"><strong><span
-                  style="color:#793842;"
-                >$</span></strong></span>
-            <input
-              type="text"
-              class="form-control"
-              id="groceries"
-              name="groceries"
-              pattern="\d+(\.\d{2})?"
-              title="Groceries"
-              placeholder="0.00"
-              aria-label="Dollar amount (with dot and two decimal places)"
-            />
-          </div>
-        </div>
-
-        <div class="col-md-12 d-flex justify-content-between">
-          <label
-            for="entertainment"
-            class="form-label me-2 align-self-center"
-          >Entertainment:</label>
-          <div class="input-group mb-3 custom-input-group">
-            <!-- Adjust width as needed -->
-            <span class="input-group-text"><strong><span
-                  style="color:#793842;"
-                >$</span></strong></span>
-            <input
-              type="text"
-              class="form-control"
-              id="entertainment"
-              name="entertainment"
-              pattern="\d+(\.\d{2})?"
-              title="Entertainment"
-              placeholder="0.00"
-              aria-label="Dollar amount (with dot and two decimal places)"
-            />
-          </div>
-        </div>
-
-        <div class="col-md-12 d-flex justify-content-between">
-          <label
-            for="travels"
-            class="form-label me-2 align-self-center"
-          >Travels:</label>
-          <div class="input-group mb-3 custom-input-group">
-            <!-- Adjust width as needed -->
-            <span class="input-group-text"><strong><span
-                  style="color:#793842;"
-                >$</span></strong></span>
-            <input
-              type="text"
-              class="form-control"
-              id="travels"
-              name="travels"
-              pattern="\d+(\.\d{2})?"
-              title="Travels"
-              placeholder="0.00"
-              aria-label="Dollar amount (with dot and two decimal places)"
-            />
-          </div>
-        </div>
-
-        <button id="new-category" class="btn btn-primary m-2">
-          <i class="fa-solid fa-plus"></i>
-          New Category
-        </button>
       </div>
     </div>
+    <!-- Goal Column -->
+<div class="col-md-8">
+  <div class="card p-4 m-1">
+    <h5>Define your goals for:</h5>
+    <div class="row" id="goal-categories">
+      <!-- Two sub-columns for Goal Categories -->
+      <div class="col-md-6" id="goal-categories-left"></div> <!-- Left column -->
+      <div class="col-md-6" id="goal-categories-right"></div> <!-- Right column -->
 
-    <!-- Second Column (8 grid spaces on md screens and above) -->
-    <div class="col-md-8">
-      <div class="card p-4 m-1">
-        <h5>Define your goals for:</h5>
-
-        <!-- Row for nested columns -->
-        <div class="row">
-            <!-- First Column for Goals -->
-            <div class="col-md-6">
-                <div class="d-flex justify-content-between">
-                  <label for="housing-goal" class="form-label me-2 align-self-center">Housing:</label>
-                  <div class="input-group mb-3">
-                    <span class="input-group-text"><strong><span style="color:#793842;">$</span></strong></span>
-                    <input type="text" class="form-control" id="housing-goal" name="housing-goal"
-                           pattern="\d+(\.\d{2})?" title="Housing Goal" placeholder="0.00"
-                           aria-label="Dollar amount (with dot and two decimal places)">
-                  </div>
-                </div>
-                
-                <div class="d-flex justify-content-between">
-                  <label for="dining-goal" class="form-label me-2 align-self-center">Dining:</label>
-                  <div class="input-group mb-3">
-                    <span class="input-group-text"><strong><span style="color:#793842;">$</span></strong></span>
-                    <input type="text" class="form-control" id="dining-goal" name="dining-goal"
-                           pattern="\d+(\.\d{2})?" title="Dining Goal" placeholder="0.00"
-                           aria-label="Dollar amount (with dot and two decimal places)">
-                  </div>
-                </div>
-
-                <div class="d-flex justify-content-between">
-                  <label for="entertainment-goal" class="form-label me-2 align-self-center">Entertainment:</label>
-                  <div class="input-group mb-3">
-                    <span class="input-group-text"><strong><span style="color:#793842;">$</span></strong></span>
-                    <input type="text" class="form-control" id="entertainment-goal" name="entertainment-goal"
-                           pattern="\d+(\.\d{2})?" title="Entertainment Goal" placeholder="0.00"
-                           aria-label="Dollar amount (with dot and two decimal places)">
-                  </div>
-                </div>
-                
-
-            </div>
-
-            <!-- Second Column for Goals -->
-            <div class="col-md-6">
-                <div class="d-flex justify-content-between">
-                  <label for="transportation-goal" class="form-label me-2 align-self-center">Transportation:</label>
-                  <div class="input-group mb-3">
-                    <span class="input-group-text"><strong><span style="color:#793842;">$</span></strong></span>
-                    <input type="text" class="form-control" id="transportation-goal" name="transportation-goal"
-                           pattern="\d+(\.\d{2})?" title="Transportation Goal" placeholder="0.00"
-                           aria-label="Dollar amount (with dot and two decimal places)">
-                  </div>
-                </div>
-                
-                <div class="d-flex justify-content-between">
-                  <label for="groceries-goal" class="form-label me-2 align-self-center">Groceries:</label>
-                  <div class="input-group mb-3">
-                    <span class="input-group-text"><strong><span style="color:#793842;">$</span></strong></span>
-                    <input type="text" class="form-control" id="groceries-goal" name="groceries-goal"
-                           pattern="\d+(\.\d{2})?" title="Groceries Goal" placeholder="0.00"
-                           aria-label="Dollar amount (with dot and two decimal places)">
-                  </div>
-                </div>
-                
-                <div class="d-flex justify-content-between">
-                  <label for="travels-goal" class="form-label me-2 align-self-center">Travels:</label>
-                  <div class="input-group mb-3">
-                    <span class="input-group-text"><strong><span style="color:#793842;">$</span></strong></span>
-                    <input type="text" class="form-control" id="travels-goal" name="travels-goal"
-                           pattern="\d+(\.\d{2})?" title="Travels Goal" placeholder="0.00"
-                           aria-label="Dollar amount (with dot and two decimal places)">
-                  </div>
-                </div>
-
-            </div>
-
-        </div>
-        
-        <!-- Button outside the nested columns -->
-        <button id="new-category" class="btn btn-primary m-2">
-            <i class="fa-solid fa-plus"></i> New Category
-        </button>
-
-      </div>
     </div>
   </div>
+</div>
+
 </main>
 
-<script src="/js/login.js"></script>
 <script src="/js/logout.js"></script>
-
-<script>
-  // Select all inputs using the "name" attribute pattern
-  document.querySelectorAll('input[type="text"][name]').forEach(input => {
-  input.addEventListener('blur', function() { let value =
-  parseFloat(this.value.replace(/,/g, '')); if (!isNaN(value)) { this.value =
-  value.toFixed(2); } }); });
-</script>
+<script src="/js/dashboard.js"></script>
