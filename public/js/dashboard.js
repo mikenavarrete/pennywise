@@ -5,24 +5,32 @@ document.addEventListener('DOMContentLoaded', () => {
     const goalCategoriesDivLeft = document.getElementById('goal-categories-left');
     const goalCategoriesDivRight = document.getElementById('goal-categories-right');
 
-    //grabbing the myChart id from the HTML, and having it render as a '2d' since it is a chart- tb
-    const chartCanvas = document.getElementById('myChart').getContext('2d');
+    //grabbing the budget / goal chart id from the HTML, and having it render as a '2d' since it is a chart- tb
+    const budgetPie = document.getElementById('budgetChart').getContext('2d');
+    const goalBar = document.getElementById('goalChart').getContext('2d');
 
-    //added empty arrays for category and budget names. -tb
-    let categoryNames = []
-    let categoryBudgets = []
-    //myChart will be let null -tb
-    let myChart;
+
+    //added empty arrays for category, goals and budget names. -tb
+    let categoryNames = [];
+    let categoryBudgets = [];
+    let categoryGoals = [];
+    //budget and goal chart will be let null -tb
+    let budgetChart;
+    let goalChart;
 
     //using function to prevent a another from replacing the category/budget chart
     //this is so no other chart interferes with it -tb
-    function initializeChart() {
-        if (myChart) {
-            myChart.destroy();
+    function initCharts() {
+        if (budgetChart) {
+            budgetChart.destroy();
+        }
+        if (goalChart) {
+            goalChart.destroy();
         }
 
+
         //created a new chart using chart.js and making the chart a pie chart for budget/categories -tb
-        myChart = new Chart(chartCanvas, {
+        budgetChart = new Chart(budgetPie, {
             type: 'pie',
             data: {
                 //the labels on the chart will display the category the user types in. -tb
@@ -47,7 +55,29 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
         });
-    }
+        //added chart graph for goals.
+    goalChart = new Chart(goalBar, {
+        type: 'bar',
+        data: {
+            labels: categoryNames,
+            datasets: [{
+                label: "Goals",
+                data: categoryGoals,
+                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                borderColor: 'rgba(255, 99, 132, 1)',
+                borderWidth: 2
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+}
+
 
     function capitalizeFirstLetter(string) {
         return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
@@ -121,7 +151,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (index > -1) {
                 categoryBudgets[index] = parseInt(newBudgetInput.value) || 0;
                 //the chart function is called -tb
-                initializeChart();
+                initCharts()
             }
         });
         if (goalCategoriesDivLeft.childElementCount <= goalCategoriesDivRight.childElementCount) {
@@ -134,7 +164,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         attachRemoveEventListeners();
         //added the chart function to be called -tb
-        initializeChart();
+        initCharts()
     }
 
     function attachRemoveEventListeners() {
@@ -161,7 +191,7 @@ document.addEventListener('DOMContentLoaded', () => {
             //added toLowerCase to the categoryName in the querySelector so it matches what is in the array -tb
             document.querySelectorAll(`[data-category="${categoryName.toLowerCase()}"]`).forEach(el => el.remove());
             //calling the chart -tb
-            initializeChart();
+            initCharts()
         }
     }
 
@@ -182,5 +212,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
     attachRemoveEventListeners();
     //calling chart function
-    initializeChart();
+    initCharts()
 });
