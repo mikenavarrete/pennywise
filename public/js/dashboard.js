@@ -108,8 +108,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         // User is expected to type in a number but if they do not, the budget will be put in as zero -tb
         // parseInt will turn a string into a whole number when the user types in the budget -tb
-        budget = parseFloat(budget);
-        goal = parseFloat(goal);
+        budget = parseInt(budget);
+        goal = parseInt(goal);
         //however, if the user's entry does not end up turning into a whole number using parseInt, the budget/goal will automatically start at 0 -tb
         if (isNaN(budget)) {
             budget = 0;
@@ -171,7 +171,7 @@ document.addEventListener('DOMContentLoaded', () => {
         newGoalInput.addEventListener('input', () => {
             const index = categoryNames.indexOf(categoryName);
             if (index > -1) {
-                categoryGoals[index] = parseFloat(newGoalInput.value) || 0;
+                categoryGoals[index] = parseInt(newGoalInput.value) || 0;
                 initCharts();
             }
         });
