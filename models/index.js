@@ -24,6 +24,19 @@ Category.belongsTo(User, {
     foreignKey: 'user_id'
 })
 
+//added budget that belongs to the category since they are linked 
+Budget.belongsTo(Category, {
+    foreignKey: 'category_id',
+    as: 'category'
+});
+
+//added category having many budgets as they are linked
+Category.hasMany(Budget, {
+    foreignKey: 'category_id',
+    as: 'budgets'
+});
+
+
 // The goals will belong to the user. The foreign key from the Goal model that references the id in the Users model
 // Goals.belongsTo(User, {
 //     foreignKey: 'user_id'

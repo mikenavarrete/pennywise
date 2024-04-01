@@ -66,7 +66,18 @@ document.addEventListener('DOMContentLoaded', () => {
                     data: categoryGoals,
                     backgroundColor: 'rgba(255, 99, 132, 0.2)',
                     borderColor: 'rgba(255, 99, 132, 1)',
-                    borderWidth: 2
+                    borderWidth: 2,
+                    type: 'bar' 
+                },
+                {
+                    //bar that shows up next to the goals bar for comparison
+                    label: "Budget",
+                    data: categoryBudgets,
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 2,
+                    fill: false, 
+                    type: 'bar' 
                 }]
             },
             options: {
@@ -76,7 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 }
             }
-        });
+        });        
     }
 
 
@@ -88,16 +99,16 @@ document.addEventListener('DOMContentLoaded', () => {
         return !!document.querySelector(`[data-category="${categoryName.toLowerCase()}"]`);
     }
 
-    function formatInputValue(inputElement) {
-        if (inputElement) {
-            inputElement.addEventListener('blur', () => {
-                let value = parseFloat(inputElement.value);
-                if (!isNaN(value)) {
-                    inputElement.value = value.toFixed(2);
-                }
-            });
-        }
-    }
+    // function formatInputValue(inputElement) {
+    //     if (inputElement) {
+    //         inputElement.addEventListener('blur', () => {
+    //             let value = parseFloat(inputElement.value);
+    //             if (!isNaN(value)) {
+    //                 inputElement.value = value.toFixed(2);
+    //             }
+    //         });
+    //     }
+    // }
 
     //added budget = 0 when the user adds a new category so the new category is default starting off a 0. -tb
     function addNewCategory(categoryName, isDefault = false, budget = 0, goal = 0) {
@@ -108,8 +119,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         // User is expected to type in a number but if they do not, the budget will be put in as zero -tb
         // parseInt will turn a string into a whole number when the user types in the budget -tb
-        budget = parseFloat(budget);
-        goal = parseFloat(goal);
+        budget = parseInt(budget);
+        goal = parseInt(goal);
         //however, if the user's entry does not end up turning into a whole number using parseInt, the budget/goal will automatically start at 0 -tb
         if (isNaN(budget)) {
             budget = 0;
@@ -171,7 +182,7 @@ document.addEventListener('DOMContentLoaded', () => {
         newGoalInput.addEventListener('input', () => {
             const index = categoryNames.indexOf(categoryName);
             if (index > -1) {
-                categoryGoals[index] = parseFloat(newGoalInput.value) || 0;
+                categoryGoals[index] = parseInt(newGoalInput.value) || 0;
                 initCharts();
             }
         });
