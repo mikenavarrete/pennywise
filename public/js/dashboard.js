@@ -66,7 +66,18 @@ document.addEventListener('DOMContentLoaded', () => {
                     data: categoryGoals,
                     backgroundColor: 'rgba(255, 99, 132, 0.2)',
                     borderColor: 'rgba(255, 99, 132, 1)',
-                    borderWidth: 2
+                    borderWidth: 2,
+                    type: 'bar' 
+                },
+                {
+                    //bar that shows up next to the goals bar for comparison
+                    label: "Budget",
+                    data: categoryBudgets,
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 2,
+                    fill: false, 
+                    type: 'bar' 
                 }]
             },
             options: {
@@ -76,7 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 }
             }
-        });
+        });        
     }
 
 
@@ -88,16 +99,16 @@ document.addEventListener('DOMContentLoaded', () => {
         return !!document.querySelector(`[data-category="${categoryName.toLowerCase()}"]`);
     }
 
-    function formatInputValue(inputElement) {
-        if (inputElement) {
-            inputElement.addEventListener('blur', () => {
-                let value = parseFloat(inputElement.value);
-                if (!isNaN(value)) {
-                    inputElement.value = value.toFixed(2);
-                }
-            });
-        }
-    }
+    // function formatInputValue(inputElement) {
+    //     if (inputElement) {
+    //         inputElement.addEventListener('blur', () => {
+    //             let value = parseFloat(inputElement.value);
+    //             if (!isNaN(value)) {
+    //                 inputElement.value = value.toFixed(2);
+    //             }
+    //         });
+    //     }
+    // }
 
     //added budget = 0 when the user adds a new category so the new category is default starting off a 0. -tb
     function addNewCategory(categoryName, isDefault = false, budget = 0, goal = 0) {
