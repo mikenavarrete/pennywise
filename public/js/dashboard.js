@@ -3,32 +3,41 @@ document.addEventListener('DOMContentLoaded', () => {
     const newCategoryNameInput = document.getElementById('new-category-name');
     const budgetCategoriesDiv = document.getElementById('budget-categories');
     const goalCategoriesDivLeft = document.getElementById('goal-categories-left');
-    const goalCategoriesDivRight = document.getElementById('goal-categories-right');
+    //currently not using. Using left div instead. -tb
+    // const goalCategoriesDivRight = document.getElementById('goal-categories-right');
 
-    //grabbing the myChart id from the HTML, and having it render as a '2d' since it is a chart- tb
-    const chartCanvas = document.getElementById('myChart').getContext('2d');
+    //grabbing the budget / goal chart id from the HTML, and having it render as a '2d' since it is a chart- tb
+    const budgetPie = document.getElementById('budgetChart').getContext('2d');
+    const goalBar = document.getElementById('goalChart').getContext('2d');
 
-    //added empty arrays for category and budget names. -tb
-    let categoryNames = []
-    let categoryBudgets = []
-    //myChart will be let null -tb
-    let myChart;
 
-    //using function to prevent a another from replacing the category/budget chart
+    //added empty arrays for category, goals and budget names. -tb
+    let categoryNames = [];
+    let categoryBudgets = [];
+    let categoryGoals = [];
+    //budget and goal chart will be let null -tb
+    let budgetChart;
+    let goalChart;
+
+    //using function to prevent a another from replacing the category/budget/goal chart
     //this is so no other chart interferes with it -tb
-    function initializeChart() {
-        if (myChart) {
-            myChart.destroy();
+    function initCharts() {
+        if (budgetChart) {
+            budgetChart.destroy();
+        }
+        if (goalChart) {
+            goalChart.destroy();
         }
 
+
         //created a new chart using chart.js and making the chart a pie chart for budget/categories -tb
-        myChart = new Chart(chartCanvas, {
+        budgetChart = new Chart(budgetPie, {
             type: 'pie',
             data: {
                 //the labels on the chart will display the category the user types in. -tb
                 labels: categoryNames,
                 datasets: [{
-                    //taking data from the budget data -tb
+                //taking data from the budget data -tb
                     label: 'Budget',
                     data: categoryBudgets,
                     //attributes for pie chart -tb 
@@ -39,7 +48,28 @@ document.addEventListener('DOMContentLoaded', () => {
             },
             //added options to chart
             options: {
-                //both the x and y axis will start at 0, so the user can enter a number that is >=0
+            //both the x and y axis will start at 0, so the user can enter a number that is >=0
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+        //added chart graph for goals.
+        goalChart = new Chart(goalBar, {
+            type: 'bar',
+            data: {
+                labels: categoryNames,
+                datasets: [{
+                    label: "Goals",
+                    data: categoryGoals,
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 2
+                }]
+            },
+            options: {
                 scales: {
                     y: {
                         beginAtZero: true
@@ -49,10 +79,11 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+
     function capitalizeFirstLetter(string) {
         return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
     }
-
+    
     function categoryExists(categoryName) {
         return !!document.querySelector(`[data-category="${categoryName.toLowerCase()}"]`);
     }
@@ -69,50 +100,62 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     //added budget = 0 when the user adds a new category so the new category is default starting off a 0. -tb
-    function addNewCategory(categoryName, isDefault = false, budget = 0) {
+    function addNewCategory(categoryName, isDefault = false, budget = 0, goal = 0) {
         categoryName = capitalizeFirstLetter(categoryName);
         if (!isDefault && categoryExists(categoryName)) {
             alert('Category already exists.');
             return;
         }
-
         // User is expected to type in a number but if they do not, the budget will be put in as zero -tb
         // parseInt will turn a string into a whole number when the user types in the budget -tb
-        budget = parseInt(budget);
-        //however, if the user's entry does not end up turning into a whole number using parseInt, the budget will automatically start at 0 -tb
+        budget = parseFloat(budget);
+        goal = parseFloat(goal);
+        //however, if the user's entry does not end up turning into a whole number using parseInt, the budget/goal will automatically start at 0 -tb
         if (isNaN(budget)) {
             budget = 0;
         }
-
-        //if successful (or not), push the name as well as the budget amount -tb
+        if (isNaN(goal)) {
+            goal = 0;
+        }
+        //if successful (or not), push the name as well as the budget and goal amount -tb
         categoryNames.push(categoryName);
         categoryBudgets.push(budget);
+        categoryGoals.push(goal);
 
         const categoryId = categoryName.toLowerCase().replace(/\s+/g, '-');
-        // added the value of the budget to be placed into the input field AND have it a fixed number using two decimal places so the user can see a whole number -tb
-        const categoryHTML = `
-            <div class="d-flex justify-content-between align-items-center mb-2 category-item" data-category="${categoryId}">
+        const budgetHTML = `
+            <div class="d-flex justify-content-between align-items-center mb-2 budget-item" data-category="${categoryId}">
                 <label class="form-label">${categoryName}:</label>
                 <div class="input-group">
                     <span class="input-group-text" style="color:#793842; font-weight:600;">$</span>
-                    <input type="text" class="form-control money-input" placeholder="0.00" value="${budget.toFixed(2)}">
-                    <button class="btn remove-category-btn" aria-label="Remove category">
+                    <input type="text" class="form-control money-input budget-input" placeholder="0.00" value="${budget.toFixed(2)}">
+                    <button class="btn remove-budget-btn" aria-label="Remove budget">
+                        <i class="fas fa-times" style="color:red;"></i>
+                    </button>
+                </div>
+            </div>`;
+        //added HTML for goal section and
+        const goalHTML = `
+            <div class="d-flex justify-content-between align-items-center mb-2 goal-item" data-category="${categoryId}">
+                <label class="form-label">${categoryName}:</label>
+                <div class="input-group">
+                    <span class="input-group-text" style="color:#793842; font-weight:600;">$</span>
+                    <input type="text" class="form-control money-input goal-input" placeholder="0.00" value="${goal.toFixed(2)}">
+                    <button class="btn remove-goal-btn" aria-label="Remove goal">
                         <i class="fas fa-times" style="color:red;"></i>
                     </button>
                 </div>
             </div>`;
 
-        budgetCategoriesDiv.insertAdjacentHTML('beforeend', categoryHTML);
-
-        //creating a budget input field from the HTML -tb
-        //uses budgetCategoriesDiv HTML -tb
-        //grabs classes data-category and its categoryId template, and money-input -tb
-        const newBudgetInput = budgetCategoriesDiv.querySelector(`[data-category="${categoryId}"] .money-input`);
-        //function for addEventListener for when the user types into the input field -tb
+        budgetCategoriesDiv.insertAdjacentHTML('beforeend', budgetHTML);
+        goalCategoriesDivLeft.insertAdjacentHTML('beforeend', goalHTML);
+        const newBudgetInput = budgetCategoriesDiv.querySelector(`[data-category="${categoryId}"] .budget-input`);
+        //variable grabs category data from html and class for goal items
+        const newGoalInput = goalCategoriesDivLeft.querySelector(`[data-category="${categoryId}"] .goal-input`);
         newBudgetInput.addEventListener('input', () => {
-             //variable for finding the category name
-             //used indexOf to search for the element in the array
-             //uses capitalizeFirstLetter so it matches the the same category name once it was added to the array, which also has a capital first letter- tb
+            //variable for finding the category name
+            //used indexOf to search for the element in the array
+            //uses capitalizeFirstLetter so it matches the the same category name once it was added to the array, which also has a capital first letter- tb
             const index = categoryNames.indexOf(capitalizeFirstLetter(categoryName));
             //if NO element(category name) is found via indexOf, it returns -1. -tb
             // However, if the category name is found, the category budget will be updated with the user entry-tb
@@ -121,50 +164,65 @@ document.addEventListener('DOMContentLoaded', () => {
             if (index > -1) {
                 categoryBudgets[index] = parseInt(newBudgetInput.value) || 0;
                 //the chart function is called -tb
-                initializeChart();
+                initCharts()
             }
         });
-        if (goalCategoriesDivLeft.childElementCount <= goalCategoriesDivRight.childElementCount) {
-            goalCategoriesDivLeft.insertAdjacentHTML('beforeend', categoryHTML);
-        } else {
-            goalCategoriesDivRight.insertAdjacentHTML('beforeend', categoryHTML);
-        }
-
-        document.querySelectorAll('.money-input').forEach(input => formatInputValue(input));
+        //added the ability to add a new goal amount to the chart -tb
+        newGoalInput.addEventListener('input', () => {
+            const index = categoryNames.indexOf(categoryName);
+            if (index > -1) {
+                categoryGoals[index] = parseFloat(newGoalInput.value) || 0;
+                initCharts();
+            }
+        });
 
         attachRemoveEventListeners();
         //added the chart function to be called -tb
-        initializeChart();
+        initCharts();
     }
 
     function attachRemoveEventListeners() {
-        document.querySelectorAll('.remove-category-btn').forEach(button => {
+        //configured the ability to deleted the goals as well as the budgets, including the amounts -tb
+        document.querySelectorAll('.remove-budget-btn, .remove-goal-btn').forEach(button => {
             button.removeEventListener('click', removeCategory);
             button.addEventListener('click', removeCategory);
         });
     }
-
+    
     function removeCategory(event) {
-        const categoryItem = event.target.closest('.category-item');
-        if (categoryItem) {
+        //added goal items to be removed and used the class budget item instead of category -tb
+        const getBudget = event.target.closest('.budget-item, .goal-item');
+        if (getBudget) {
             //created variable that grabs the value of the data-category attributes from the data-category class and converts it to lowercase -tb
             //this is to make sure it matches the categoryName that was added to the array -tb
-            const categoryName = capitalizeFirstLetter(categoryItem.getAttribute('data-category').toLowerCase());
+            const categoryName = capitalizeFirstLetter(getBudget.getAttribute('data-category').toLowerCase());
             //created variable that searches for the categoryName in the categoryNames array -tb
             const index = categoryNames.indexOf(categoryName);
             //if indexOf does not find the category name, it returns -1 -tb
             //if the category name is found, it will be > -1, thus it removes the category name and then removes the budget for the category from the categoryNames array -tb 
             if (index > -1) {
-                categoryNames.splice(index, 1);
+                //budget, goals and category data will be deleted from array -tb
                 categoryBudgets.splice(index, 1);
+                categoryGoals.splice(index, 1);
+                categoryNames.splice(index, 1);
+                
+                //variable that grabs the budget item and the category name created, converts it to lowercase
+                //then the item is removed
+                const budgetItem = document.querySelector(`.budget-item[data-category="${categoryName.toLowerCase()}"]`);
+                if (budgetItem) {
+                    budgetItem.remove();
+                }
+                //variable that grabs the goal item in the HTML and the category name, converts it to lowercase and is deleted -tb
+                const goalItem = document.querySelector(`.goal-item[data-category="${categoryName.toLowerCase()}"]`);
+                if (goalItem) {
+                    goalItem.remove();
+                }
+                //calling the chart -tb
+                initCharts()
             }
-            //added toLowerCase to the categoryName in the querySelector so it matches what is in the array -tb
-            document.querySelectorAll(`[data-category="${categoryName.toLowerCase()}"]`).forEach(el => el.remove());
-            //calling the chart -tb
-            initializeChart();
         }
     }
-
+    
     addCategoryBtn.addEventListener('click', () => {
         const categoryName = newCategoryNameInput.value.trim();
         if (categoryName) {
@@ -182,5 +240,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
     attachRemoveEventListeners();
     //calling chart function
-    initializeChart();
+    initCharts()
 });
