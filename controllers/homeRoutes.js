@@ -25,20 +25,45 @@ router.get('/login', (req, res) => {
     if (req.session.logged_in) {
         res.redirect('/dashboard');
     } else {
-        res.render('login'); 
+        res.render('login');
     }
 });
 
-router.get('/dashboard', withAuth, (req, res) => {
-        //fixed logged_in syntax
+//added async, await and try. Added budget data to be fetched when user is logged in which will
+//pull the users category and budget. 
+router.get('/dashboard', withAuth, async (req, res) => {
     console.log(req.session)
     if (req.session.logged_in) {
-        //corrected the rendering redirect by making it go to the dashbaord.handlebars by removing the '/' -tb
-        res.render('dashboard');
-    } else {
-        //added '/' to the user gets redirected to the login page if they are not logged in -tb
-        res.redirect('/login');
+        try {
+            //finds all budget data for the user under their username and session
+            const budgetData = await Budget.findAll({
+                where: {
+                    user_id: req.session.user_id
+                },
+                include: [
+                    {
+                        //includes data from categories
+                        model: Category,
+                        as: 'category'
+                    }
+                ]
+            })
+            //variable that will help rendering the data to the page
+            const budgets = budgetData.map(budget => budget.get({ plain: true }))
+
+        //render the dashboard with the users budget and category information
+        res.render('dashboard', {
+            budgets,
+            logged_in: req.session.logged_in
+        });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json(err)
     }
+} else {
+    //if user is not logged in they will be redirected to login page
+    res.redirect('/login');
+}
 });
 
 
