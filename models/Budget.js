@@ -11,11 +11,7 @@ Budget.init(
             primaryKey: true,
             autoIncrement: true,
         },
-        title: {
-            type: DataTypes.STRING,
-            allowNull: false,
-        },
-        totalAmount: {
+        amount: {
             type: DataTypes.DECIMAL,
             allowNull: false,
         },
