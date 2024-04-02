@@ -62,6 +62,14 @@ header #logout {
   padding-top: 0px !important;
 }
 
+#goal-categories-left {
+  padding-top: 30px;
+}
+
+#budgetChart {
+  margin-bottom: 30px;
+}
+
 .form-container {
   position: relative;
   /* Other styling for the form, ensuring it doesn't cover the full page width */
@@ -147,9 +155,15 @@ header #logout {
   padding-left: 20px;
 }
 
+#goal-column {
+  margin-bottom: 200px;
+}
+
 h5 {
   color: var(--primary) !important;
   margin-bottom: 20px !important;
+  font-size: 1.5rem !important;
+  font-weight: 800 !important;
 }
 
 ul {

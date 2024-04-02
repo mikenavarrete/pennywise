@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
             data: {
                 labels: categoryNames,
                 datasets: [{
-                    label: 'Budget',
+                    label: 'Expenses',
                     data: categoryBudgets,
                     backgroundColor: budgetBackgroundColors,
                     borderColor: budgetBackgroundColors, // Matching border color to background color
