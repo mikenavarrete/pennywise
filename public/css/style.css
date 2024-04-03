@@ -93,12 +93,16 @@ header #logout {
   width: 150px;
 }
 
-#showLogin, #add-category-btn {
+#save-btn {
+  width: 100%;
+}
+
+#showLogin, #add-category-btn, #save-btn {
   background-color: var(--primary);
   border-color: var(--primary);
 }
 
-#showLogin:hover, #add-category-btn:hover {
+#showLogin:hover, #add-category-btn:hover, #save-btn:hover {
   background-color: var(--secondary);
   border-color: var(--secondary);
   color: var(--primary);
