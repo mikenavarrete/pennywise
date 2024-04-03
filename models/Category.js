@@ -25,7 +25,15 @@ Category.init(
                 model: 'user',
                 key:  'id'
             }
-        }
+        },
+        budget: {
+            type: DataTypes.DECIMAL(10, 2), // Adjust precision as needed
+            allowNull: true, // Set based on your requirement
+          },
+          goal: {
+            type: DataTypes.DECIMAL(10, 2), // Adjust precision as needed
+            allowNull: true, // Set based on your requirement
+          }
     },
     {
         sequelize,

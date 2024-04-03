@@ -106,6 +106,21 @@ document.addEventListener('DOMContentLoaded', () => {
         categoryBudgets.push(budget);
         categoryGoals.push(goal);
 
+        fetch('/dashboard/category', {
+            method: 'POST', // Use PUT if updating an existing category
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                name: categoryName,
+                budget: budget, // Ensure you have a budget field in your Category model
+                goal: goal, // Ensure you have a goal field in your Category model (if you're using one)
+            }),
+        })
+        .then(response => response.json())
+        .then(data => console.log('Success:', data))
+        .catch((error) => console.error('Error:', error));
+
         
         const categoryId = categoryName.toLowerCase().replace(/\s+/g, '-');
                 //added HTML for goal section and budget -tb

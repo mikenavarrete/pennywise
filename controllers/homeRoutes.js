@@ -8,7 +8,7 @@ const { User, Budget, Category } = require('../models')
 const withAuth = require('../utils/auth')
 
 
-router.get('/', withAuth, (req, res) => {
+router.get('/', (req, res) => {
     //corrected syntax to logged_in instead of loggedIn to stay consistent with other code
     // this prevented the user from being redirected to the dashboard page if they were logged in -tb
     if (req.session.logged_in) {
@@ -20,7 +20,7 @@ router.get('/', withAuth, (req, res) => {
 
 //renders the login page to the user
 // if user is logged in they will go to their dashboard, otherwise they see the login page again
-router.get('/login', withAuth, (req, res) => {
+router.get('/login', (req, res) => {
     //fixed logged_in syntax -tb
     if (req.session.logged_in) {
         res.redirect('/dashboard');
