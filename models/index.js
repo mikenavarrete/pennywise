@@ -15,19 +15,19 @@ Budget.belongsTo(User, {
     foreignKey: 'user_id'
 });
 
-Category.belongsTo(User, {
-    foreignKey: 'user_id'
-});
+// Category.belongsTo(User, {
+//     foreignKey: 'user_id'
+// });
 
-Budget.belongsTo(Category, {
-    foreignKey: 'category_id',
-    as: 'category'
-});
+// Budget.belongsTo(Category, {
+//     foreignKey: 'category_id',
+//     as: 'category'
+// });
 
-Category.hasMany(Budget, {
-    foreignKey: 'category_id',
-    as: 'budgets'
-});
+// Category.hasMany(Budget, {
+//     foreignKey: 'category_id',
+//     as: 'budgets'
+// });
 
 Goals.belongsTo(User, {
     foreignKey: 'user_id'

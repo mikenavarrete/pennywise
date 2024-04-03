@@ -3,7 +3,7 @@
 //bringing in express packages for routes -tb
 const router = require('express').Router()
 //bringing in models -tb
-const { User, Budget, Category } = require('../models')
+const { User, Budget, Goals } = require('../models')
 //bringing in helper -tb
 const withAuth = require('../utils/auth')
 
@@ -32,15 +32,20 @@ router.get('/login', (req, res) => {
 
 router.get('/dashboard', withAuth, async (req, res) => {
     try {
-        const budgetData = await Budget.findAll({
-            where: { user_id: req.session.user_id }
-        });
-        const categoryData = await Category.findAll({
-            where: { user_id: req.session.user_id }
-        });
-        const budgets = budgetData.map(budget => budget.get({ plain: true }));
-        const categories = categoryData.map(category => category.get({ plain: true }));
-        res.render('dashboard', { budgets, categories, logged_in: req.session.logged_in });
+        const userData = await User.findByPk(req.session.user_id, {
+            attributes: { exclude: ['password'] },
+            include: [{ model: Budget }, { model: Goals }]
+        })
+
+        // const budgetData = await Budget.findAll({
+        //     where: { user_id: req.session.user_id }
+        // });
+        // const categoryData = await Category.findAll({
+        //     where: { user_id: req.session.user_id }
+        // });
+        // const budgets = budgetData.map(budget => budget.get({ plain: true }));
+        // const categories = categoryData.map(category => category.get({ plain: true }));
+        res.render('dashboard', { ...userData, logged_in: req.session.logged_in });
     } catch (err) {
         res.status(500).json(err);
     }
