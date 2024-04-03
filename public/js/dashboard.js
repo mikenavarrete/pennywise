@@ -3,15 +3,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const newCategoryNameInput = document.getElementById('new-category-name');
     const budgetCategoriesDiv = document.getElementById('budget-categories');
     const goalCategoriesDivLeft = document.getElementById('goal-categories-left');
-    //grabbing the budget / goal chart id from the HTML, and having it render as a '2d' since it is a chart- tb
     const budgetPie = document.getElementById('budgetChart').getContext('2d');
     const goalBar = document.getElementById('goalChart').getContext('2d');
 
-        //added empty arrays for category, goals and budget names. -tb
     let categoryNames = [];
     let categoryBudgets = [];
     let categoryGoals = [];
-        //budget and goal chart will be let null -tb
     let budgetChart;
     let goalChart;
 
@@ -49,25 +46,22 @@ document.addEventListener('DOMContentLoaded', () => {
         goalChart = new Chart(goalBar, {
             type: 'bar',
             data: {
-                labels: categoryNames,
+                labels: categoryNames, // Shared labels for both datasets
                 datasets: [{
-                    //bar for the expenses
                     label: 'Expenses',
-                    data: categoryBudgets,
-                    backgroundColor: budgetBackgroundColors,
-                    borderColor: budgetBackgroundColors, // Matching border color to background color
+                    data: categoryBudgets, // Use updated budget data
+                    backgroundColor: budgetBackgroundColors, // Or any color scheme
+                    borderColor: budgetBackgroundColors.map(color => color.replace('0.6', '1')), // Optional: Adjust border color
                     borderWidth: 1
                 }, {
-                    //bar for the goals (they compare)
                     label: 'Goals',
-                    data: categoryGoals,
-                    backgroundColor: goalBackgroundColors,
-                    borderColor: goalBackgroundColors, // Matching border color to background color
+                    data: categoryGoals, // Use updated goal data
+                    backgroundColor: goalBackgroundColors, // Different color scheme for goals
+                    borderColor: goalBackgroundColors.map(color => color.replace('0.6', '1')), // Optional: Adjust border color
                     borderWidth: 1
                 }]
             },
             options: {
-                //both the x and y axis will start at 0, so the user can enter a number that is >=0
                 scales: {
                     y: {
                         beginAtZero: true
@@ -84,52 +78,49 @@ document.addEventListener('DOMContentLoaded', () => {
     function categoryExists(categoryName) {
         return !!document.querySelector(`[data-category="${categoryName.toLowerCase()}"]`);
     }
-    //added budget = 0 when the user adds a new category so the new category is default starting off a 0. -tb
-    function addNewCategory(categoryName, isDefault = false, budget = 0, goal = 0) {
+
+    const updateBudgetData = async (categoryName, budget) => {
+        const response = await fetch('/api/dashboard/budget', { // Make sure this is the correct endpoint
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name: categoryName, amount: budget}),
+        })
+
+    }
+
+    const updateGoalData = async (categoryName, goal) => {
+        const response = await fetch('/api/dashboard/goal', { // Make sure this is the correct endpoint
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name: categoryName, amount: goal}),
+        })
+
+    }
+    
+
+    function addNewCategory(categoryName, isDefault = false, budget , goal ) {
         categoryName = capitalizeFirstLetter(categoryName);
         if (!isDefault && categoryExists(categoryName)) {
             alert('Category already exists.');
             return;
         }
-                // User is expected to type in a number but if they do not, the budget will be put in as zero -tb
-        // parseInt will turn a string into a whole number when the user types in the budget -tb
+
         budget = parseInt(budget);
         goal = parseInt(goal);
-        if (isNaN(budget)) {
-            budget = 0;
-        }
-        if (isNaN(goal)) {
-            goal = 0;
-        }
-                //if successful (or not), push the name as well as the budget and goal amount -tb
+        if (isNaN(budget)) { budget = 0; }
+        if (isNaN(goal)) { goal = 0; }
+
         categoryNames.push(categoryName);
         categoryBudgets.push(budget);
         categoryGoals.push(goal);
 
-        fetch('/dashboard/category', {
-            method: 'POST', // Use PUT if updating an existing category
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                name: categoryName,
-                budget: budget, // Ensure you have a budget field in your Category model
-                goal: goal, // Ensure you have a goal field in your Category model (if you're using one)
-            }),
-        })
-        .then(response => response.json())
-        .then(data => console.log('Success:', data))
-        .catch((error) => console.error('Error:', error));
-
-        
         const categoryId = categoryName.toLowerCase().replace(/\s+/g, '-');
-                //added HTML for goal section and budget -tb
         const budgetHTML = `
             <div class="d-flex justify-content-between align-items-center mb-2 budget-item" data-category="${categoryId}">
                 <label class="form-label">${categoryName}:</label>
                 <div class="input-group">
                     <span class="input-group-text" style="color:#793842; font-weight:600;">$</span>
-                    <input type="text" class="form-control money-input budget-input" placeholder="0.00" value="${budget.toFixed(2)}">
+                    <input type="text" class="form-control money-input budget-input" placeholder="0.00" value="${budget.toFixed(2)}" data-category="${categoryId}">
                     <button class="btn remove-budget-btn" aria-label="Remove budget">
                         <i class="fas fa-times" style="color:red;"></i>
                     </button>
@@ -140,7 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <label class="form-label">${categoryName}:</label>
                 <div class="input-group">
                     <span class="input-group-text" style="color:#793842; font-weight:600;">$</span>
-                    <input type="text" class="form-control money-input goal-input" placeholder="0.00" value="${goal.toFixed(2)}">
+                    <input type="text" class="form-control money-input goal-input" placeholder="0.00" value="${goal.toFixed(2)}" data-category="${categoryId}">
                     <button class="btn remove-goal-btn" aria-label="Remove goal">
                         <i class="fas fa-times" style="color:red;"></i>
                     </button>
@@ -149,27 +140,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
         budgetCategoriesDiv.insertAdjacentHTML('beforeend', budgetHTML);
         goalCategoriesDivLeft.insertAdjacentHTML('beforeend', goalHTML);
-            //variable grabs category data from html and class for goal items
-        const newBudgetInput = budgetCategoriesDiv.querySelector(`[data-category="${categoryId}"] .budget-input`);
-        const newGoalInput = goalCategoriesDivLeft.querySelector(`[data-category="${categoryId}"] .goal-input`);
 
-        newBudgetInput.addEventListener('input', () => {
-            const index = categoryNames.indexOf(capitalizeFirstLetter(categoryName));
-            //searches for the element in the  array using its name property and if it is not found, there will be no return as index will be -1. 
-            //if the indexOf finds array item then the value field will be updated as a whole number =tb
-            if (index > -1) {
-                categoryBudgets[index] = parseInt(newBudgetInput.value) || 0;
-                //the chart function is called -tb
-                initCharts();
+        const newBudgetInput = document.querySelector(`[data-category="${categoryId}"] .budget-input`);
+        const newGoalInput = document.querySelector(`[data-category="${categoryId}"] .goal-input`);
+
+        
+
+        newBudgetInput.addEventListener('blur', () => {
+            const index = categoryNames.indexOf(categoryName);
+            if (index !== -1) {
+                categoryBudgets[index] = parseFloat(newBudgetInput.value) || 0; // Update the budget array
             }
+            initCharts(); // Refresh charts with updated data
         });
 
-        newGoalInput.addEventListener('input', () => {
+        newGoalInput.addEventListener('blur', () => {
             const index = categoryNames.indexOf(categoryName);
-            if (index > -1) {
-                categoryGoals[index] = parseInt(newGoalInput.value) || 0;
-                initCharts();
+            if (index !== -1) {
+                // Ensure this logic correctly updates the categoryGoals array
+                categoryGoals[index] = parseFloat(newGoalInput.value) || 0;
+                console.log("Updated goals array: ", categoryGoals);
             }
+            initCharts(); // This call should redraw the chart with the updated goals
         });
 
         attachRemoveEventListeners();
@@ -219,10 +211,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    ['Housing', 'Groceries', 'Transportation', 'Dining', 'Entertainment', 'Travels'].forEach(category => {
-        addNewCategory(category, true);
-    });
+    // ['Housing', 'Groceries', 'Transportation', 'Dining', 'Entertainment', 'Travels'].forEach(category => {
+    //     addNewCategory(category, true);
+    // });
 
     attachRemoveEventListeners();
     initCharts();
+
 });

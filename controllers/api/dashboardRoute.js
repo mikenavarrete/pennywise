@@ -23,7 +23,7 @@ router.get('/dashboard', async (req, res) => {
     }
 });
 
-router.post('/dashboard/category', async (req, res) => {
+router.post('/category', async (req, res) => {
     try {
         const { name, budget, goal } = req.body; // Extract new fields
         const newCategory = await Category.create({
@@ -58,15 +58,45 @@ router.delete('/dashboard/budget/:id', async (req, res) => {
     }
 });
 
-router.post('/dashboard/category', async (req, res) => {
+router.post('/budget', async (req, res) => {
     try {
-        const newCategory = await Category.create({
-            ...req.body,
-            user_id: req.session.user_id
-        });
-        res.status(200).json(newCategory);
-    } catch (err) {
-        res.status(400).json(err);
+        
+        // Check if the category exists
+        let newBudget = await Budget.create({ ...req.body, user_id : req.session.user_id });
+        
+        // if (category) {
+        //     // Update existing category
+        //     await category.update({ budget, goal });
+        // } else {
+        //     // Or create a new category if it doesn't exist
+        //     category = await Category.create({ name, budget, goal });
+        // }
+
+        res.json({ message: 'Budget updated successfully', newBudget });
+    } catch (error) {
+        console.error('Error updating category:', error);
+        res.status(500).json({ message: 'Error updating budget', error: error.message });
+    }
+});
+
+router.post('/goal', async (req, res) => {
+    try {
+        
+        // Check if the category exists
+        let newGoal = await Goals.create({ ...req.body, user_id : req.session.user_id });
+        
+        // if (category) {
+        //     // Update existing category
+        //     await category.update({ budget, goal });
+        // } else {
+        //     // Or create a new category if it doesn't exist
+        //     category = await Category.create({ name, budget, goal });
+        // }
+
+        res.json({ message: 'Goal updated successfully', newGoal });
+    } catch (error) {
+        console.error('Error updating goal:', error);
+        res.status(500).json({ message: 'Error updating category', error: error.message });
     }
 });
 

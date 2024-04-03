@@ -3,46 +3,33 @@ const sequelize = require('../config/connection');
 
 class Category extends Model {}
 
-Category.init(
-    {
-        id: {
-            //category model id -tb
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            primaryKey: true,
-            autoIncrement: true,
-        },
-        name: {
-            //name of the Category -tb
-            type: DataTypes.STRING,
-            allowNull: false
-        },
-        user_id: {
-            //the userId will be associated with the Category model, using the primary key from the id in the User model -tb
-            type: DataTypes.INTEGER,
-            allowNull: true, // Changed to true, as the user_id might be optional
-            references: {
-                model: 'user',
-                key:  'id'
-            }
-        },
-        budget: {
-            type: DataTypes.DECIMAL(10, 2), // Adjust precision as needed
-            allowNull: true, // Set based on your requirement
-          },
-          goal: {
-            type: DataTypes.DECIMAL(10, 2), // Adjust precision as needed
-            allowNull: true, // Set based on your requirement
-          }
+Category.init({
+    // Assuming an auto-generated ID field
+    id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+        allowNull: false
     },
-    {
-        sequelize,
-        timestamps: false,
-        freezeTableName: true,
-        underscored: true,
-        modelName: 'category',
+    name: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    budget: {
+        type: DataTypes.DECIMAL(10, 2), // Adjust as per your requirement
+        allowNull: false,
+        defaultValue: 0.00
+    },
+    goal: {
+        type: DataTypes.DECIMAL(10, 2), // Adjust as per your requirement
+        allowNull: false,
+        defaultValue: 0.00
     }
-);
+}, {
+    sequelize,
+    modelName: 'Category',
+    timestamps: true // Set this based on your requirement
+});
 
 //exporting model to index.js -tb
 module.exports = Category;

@@ -5,11 +5,9 @@ class Budget extends Model {}
 
 Budget.init(
     {
-        id: {
-            type: DataTypes.INTEGER,
+        name: {
+            type: DataTypes.STRING,
             allowNull: false,
-            primaryKey: true,
-            autoIncrement: true,
         },
         amount: {
             type: DataTypes.DECIMAL,
