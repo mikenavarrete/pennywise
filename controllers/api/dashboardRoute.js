@@ -1,25 +1,29 @@
 const router = require('express').Router();
+const withAuth = require('../../utils/auth');
 const { Budget, Category, Goals } = require('../../models');
 
-router.get('/dashboard', async (req, res) => {
+router.get('/dashboard', withAuth, async (req, res) => {
     try {
-        const budgetData = await Budget.findAll({
-            where: { user_id: req.session.user_id }
-        });
-        const categoryData = await Category.findAll({
-            where: { user_id: req.session.user_id }
-        });
-        const goalData = await Goals.findAll({
-            where: { user_id: req.session.user_id }
+        // Fetch all categories for the logged-in user with their budgets and goals
+        const categoriesData = await Category.findAll({
+            where: { user_id: req.session.user_id },
+            include: [
+                { model: Budget },
+                { model: Goals }
+            ]
         });
 
-        const budgets = budgetData.map(budget => budget.get({ plain: true }));
-        const categories = categoryData.map(category => category.get({ plain: true }));
-        const goals = goalData.map(goal => goal.get({ plain: true }));
+        // Serialize data so the template can read it
+        const categories = categoriesData.map(category => category.get({ plain: true }));
 
-        res.render('dashboard', { budgets, categories, goals, logged_in: req.session.logged_in });
-    } catch (err) {
-        res.status(500).json(err);
+        // Pass categories along with their budgets and goals to the dashboard view
+        res.render('dashboard', { 
+            categories, 
+            logged_in: req.session.logged_in 
+        });
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).json({ message: 'Failed to load dashboard', error: error.message });
     }
 });
 
@@ -58,47 +62,88 @@ router.delete('/dashboard/budget/:id', async (req, res) => {
     }
 });
 
-router.post('/budget', async (req, res) => {
+router.post('/budget', withAuth, async (req, res) => {
     try {
-        
-        // Check if the category exists
-        let newBudget = await Budget.create({ ...req.body, user_id : req.session.user_id });
-        
-        // if (category) {
-        //     // Update existing category
-        //     await category.update({ budget, goal });
-        // } else {
-        //     // Or create a new category if it doesn't exist
-        //     category = await Category.create({ name, budget, goal });
-        // }
+        const { categoryName, amount } = req.body;
 
-        res.json({ message: 'Budget updated successfully', newBudget });
+        // Find the category by name for the current user
+        const category = await Category.findOne({
+            where: {
+                name: categoryName,
+                user_id: req.session.user_id
+            }
+        });
+
+        if (!category) {
+            return res.status(404).json({ message: 'Category not found' });
+        }
+
+        // Create or update the budget for the found category
+        const [budget, created] = await Budget.findOrCreate({
+            where: { categoryId: category.id },
+            defaults: {
+                amount: amount,
+                user_id: req.session.user_id
+            }
+        });
+
+        if (!created) {
+            // If the budget already exists, update it
+            budget.amount = amount;
+            await budget.save();
+        }
+
+        res.json(budget);
     } catch (error) {
-        console.error('Error updating category:', error);
-        res.status(500).json({ message: 'Error updating budget', error: error.message });
+        console.error('Error:', error);
+        res.status(500).json({ message: 'Failed to update budget', error: error.message });
     }
 });
 
-router.post('/goal', async (req, res) => {
+router.post('/goal', withAuth, async (req, res) => {
     try {
-        
-        // Check if the category exists
-        let newGoal = await Goals.create({ ...req.body, user_id : req.session.user_id });
-        
-        // if (category) {
-        //     // Update existing category
-        //     await category.update({ budget, goal });
-        // } else {
-        //     // Or create a new category if it doesn't exist
-        //     category = await Category.create({ name, budget, goal });
-        // }
+        const { categoryName, amount } = req.body;
 
-        res.json({ message: 'Goal updated successfully', newGoal });
+        // Find the category by name for the current user
+        const category = await Category.findOne({
+            where: {
+                name: categoryName,
+                user_id: req.session.user_id
+            }
+        });
+
+        if (!category) {
+            return res.status(404).json({ message: 'Category not found' });
+        }
+
+        // Check if a goal for the category exists
+        let goal = await Goals.findOne({
+            where: {
+                categoryId: category.id
+            }
+        });
+
+        if (goal) {
+            // If the goal already exists, update it
+            goal.amount = amount;
+            await goal.save();
+        } else {
+            // Otherwise, create a new goal
+            goal = await Goals.create({
+                categoryId: category.id,
+                amount: amount,
+                user_id: req.session.user_id
+            });
+        }
+
+        res.json(goal);
     } catch (error) {
-        console.error('Error updating goal:', error);
-        res.status(500).json({ message: 'Error updating category', error: error.message });
+        console.error('Error updating/creating goal:', error);
+        res.status(500).json({ message: 'Error updating/creating goal', error: error.message });
     }
 });
+
+
 
 router.delete('/dashboard/category/:id', async (req, res) => {
     try {
