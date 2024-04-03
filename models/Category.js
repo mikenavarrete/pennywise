@@ -17,11 +17,6 @@ Category.init(
             type: DataTypes.STRING,
             allowNull: false
         },
-        description: {
-            //the description for the category -tb
-            type: DataTypes.STRING,
-            allowNull: true // Changed to true, as descriptions are often optional
-        },
         user_id: {
             //the userId will be associated with the Category model, using the primary key from the id in the User model -tb
             type: DataTypes.INTEGER,
