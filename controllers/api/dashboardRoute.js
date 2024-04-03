@@ -23,13 +23,16 @@ router.get('/dashboard', async (req, res) => {
     }
 });
 
-router.post('/dashboard/budget', async (req, res) => {
+router.post('/dashboard/category', async (req, res) => {
     try {
-        const newBudget = await Budget.create({
-            amount: req.body.amount,
-            user_id: req.session.user_id
+        const { name, budget, goal } = req.body; // Extract new fields
+        const newCategory = await Category.create({
+            name,
+            user_id: req.session.user_id,
+            budget, // Make sure your Category model includes this field
+            goal, // Ensure this field is included if necessary
         });
-        res.status(200).json(newBudget);
+        res.status(200).json(newCategory);
     } catch (err) {
         res.status(400).json(err);
     }
