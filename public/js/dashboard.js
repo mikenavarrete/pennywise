@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const goalCategoriesDivLeft = document.getElementById('goal-categories-left');
     const budgetPie = document.getElementById('budgetChart').getContext('2d');
     const goalBar = document.getElementById('goalChart').getContext('2d');
+    const saveBtn = document.getElementById('save-btn')
 
     let categoryNames = [];
     let categoryBudgets = [];
