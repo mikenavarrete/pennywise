@@ -1,69 +1,14 @@
 const router = require('express').Router();
-const { Budget, Category, Goals } = require('../../models');
+const { where } = require('sequelize');
+const { Budget, Goals } = require('../../models');
 
-router.get('/dashboard', async (req, res) => {
-    try {
-        const budgetData = await Budget.findAll({
-            where: { user_id: req.session.user_id }
-        });
-        const categoryData = await Category.findAll({
-            where: { user_id: req.session.user_id }
-        });
-        const goalData = await Goals.findAll({
-            where: { user_id: req.session.user_id }
-        });
-
-        const budgets = budgetData.map(budget => budget.get({ plain: true }));
-        const categories = categoryData.map(category => category.get({ plain: true }));
-        const goals = goalData.map(goal => goal.get({ plain: true }));
-
-        res.render('dashboard', { budgets, categories, goals, logged_in: req.session.logged_in });
-    } catch (err) {
-        res.status(500).json(err);
-    }
-});
-
-router.post('/category', async (req, res) => {
-    try {
-        const { name, budget, goal } = req.body; // Extract new fields
-        const newCategory = await Category.create({
-            name,
-            user_id: req.session.user_id,
-            budget, // Make sure your Category model includes this field
-            goal, // Ensure this field is included if necessary
-        });
-        res.status(200).json(newCategory);
-    } catch (err) {
-        res.status(400).json(err);
-    }
-});
-
-router.delete('/dashboard/budget/:id', async (req, res) => {
-    try {
-        const budget = await Budget.destroy({
-            where: {
-                id: req.params.id,
-                user_id: req.session.user_id
-            }
-        });
-
-        if (!budget) {
-            res.status(404).json({ message: 'No budget found with this id.' });
-            return;
-        }
-
-        res.status(200).json(budget);
-    } catch (err) {
-        res.status(500).json(err);
-    }
-});
 
 router.post('/budget', async (req, res) => {
     try {
-        
+
         // Check if the category exists
-        let newBudget = await Budget.create({ ...req.body, user_id : req.session.user_id });
-        
+        let newBudget = await Budget.create({ ...req.body, user_id: req.session.user_id });
+
         // if (category) {
         //     // Update existing category
         //     await category.update({ budget, goal });
@@ -81,10 +26,10 @@ router.post('/budget', async (req, res) => {
 
 router.post('/goal', async (req, res) => {
     try {
-        
+
         // Check if the category exists
-        let newGoal = await Goals.create({ ...req.body, user_id : req.session.user_id });
-        
+        let newGoal = await Goals.create({ ...req.body, user_id: req.session.user_id });
+
         // if (category) {
         //     // Update existing category
         //     await category.update({ budget, goal });
@@ -100,53 +45,87 @@ router.post('/goal', async (req, res) => {
     }
 });
 
-router.delete('/dashboard/category/:id', async (req, res) => {
+// Route to update the goals
+router.put('/goal/:id', async (req, res) => {
     try {
-        const category = await Category.destroy({
+        const updatedGoal = await Goals.update(
+            {
+                name: req.body.name,
+                amount: req.body.amount
+            },
+            {
+                where: {
+                    id: req.params.id
+                }
+            }
+        )
+
+        res.status(200).json(updatedGoal)
+
+    } catch (err) {
+        res.status(500).json(err)
+    }
+})
+
+// Route to update the budget
+router.put('/budget/:id', async (req, res) => {
+    try {
+        const updatedBudget = await Budget.update(
+            {
+                name: req.body.name,
+                amount: req.body.amount
+            },
+            {
+                where: {
+                    id: req.params.id
+                }
+            }
+        )
+
+        res.status(200).json(updatedBudget)
+
+    } catch (err) {
+        res.status(500).json(err)
+    }
+})
+
+
+router.delete('/goal/:id', async (req, res) => {
+    try {
+        const deletedGoal = await Goals.destroy({
             where: {
                 id: req.params.id,
                 user_id: req.session.user_id
             }
         });
 
-        if (!category) {
-            res.status(404).json({ message: 'No category found with this id.' });
+        if (!deletedGoal) {
+            res.status(404).json({ message: 'No goal found with this id.' });
             return;
         }
 
-        res.status(200).json(category);
+        res.status(200).json(deletedGoal);
     } catch (err) {
         res.status(500).json(err);
     }
 });
 
-router.post('/dashboard/goals', async (req, res) => {
-    try {
-        const newGoal = await Goals.create({
-            ...req.body,
-            user_id: req.session.user_id
-        });
-        res.status(200).json(newGoal);
-    } catch (err) {
-        res.status(400).json(err);
-    }
-});
 
-router.delete('/dashboard/goals/:id', async (req, res) => {
+router.delete('/budget/:id', async (req, res) => {
     try {
-        const goal = await Goals.destroy({
+
+        const deletedBudget = await Budget.destroy({
             where: {
-                id: req.params.id,
-                user_id: req.session.user_id
+                id: req.params.id
             }
-        });
+        })
 
-        if (!goal) {
-            res.status(404).json({ message: 'No goal found with this id.' });
+        if (!deletedBudget) {
+            res.status(404).json({ message: 'No budget found with this id.' });
             return;
         }
 
-        res.status(200).json(goal);
+        res.status(200).json(deletedBudget);
     } catch (err) {
         res.status(500).json(err);
     }
