@@ -154,9 +154,9 @@ document.addEventListener('DOMContentLoaded', () => {
             if (index !== -1) {
                 categoryBudgets[index] = parseFloat(newBudgetInput.value) || 0; // Update the budget array
             }
-
-            createBudgetData(categoryName, newBudgetInput.value)
-                .then(() => initCharts())
+            initCharts()
+            // createBudgetData(categoryName, newBudgetInput.value)
+            //     .then(() => initCharts())
         });
 
         newGoalInput.addEventListener('blur', () => {
@@ -166,15 +166,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 categoryGoals[index] = parseFloat(newGoalInput.value) || 0;
                 console.log("Updated goals array: ", categoryGoals);
             }
-
-            createGoalData(categoryName, newGoalInput.value)
-                .then(() => initCharts())
+            initCharts()
+            // createGoalData(categoryName, newGoalInput.value)
+            //     .then(() => initCharts())
 
         });
+        saveBtn.addEventListener('click', () => {
+            createBudgetData(categoryName, newBudgetInput.value)
+            createGoalData(categoryName, newGoalInput.value)
+        })
 
         attachRemoveEventListeners();
         initCharts();
     }
+
 
     function attachRemoveEventListeners() {
         document.querySelectorAll('.remove-budget-btn, .remove-goal-btn').forEach(button => {
@@ -312,7 +317,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         handleGoalsDelete(goal.id)
                     })
 
-                    // initCharts()
+                    initCharts()
 
                 }
 
