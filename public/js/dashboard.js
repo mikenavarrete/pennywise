@@ -144,9 +144,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="input-group">
                     <span class="input-group-text" style="color:#793842; font-weight:600;">$</span>
                     <input type="text" class="form-control money-input goal-input" placeholder="0.00" value="${goal.toFixed(2)}" data-category="${categoryId}">
-                    <button class="btn remove-goal-btn" aria-label="Remove goal">
-                        <i class="fas fa-times" style="color:red;"></i>
-                    </button>
+                    
                 </div>
             </div>`;
 
@@ -331,10 +329,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <span class="input-group-text" style="color:#793842; font-weight:600;">$</span>
                         <input type="text" class="form-control money-input goal-input" placeholder="0.00" value="${goal.amount}" data-category="${goal.id}">
 
-                        <button class="btn remove-goal-btn" id="${goal.name}" aria-label="Remove goal">
-
-                            <i class="fas fa-times" style="color:red;"></i>
-                        </button>
+                        
                     </div>
                 </div>`
 
