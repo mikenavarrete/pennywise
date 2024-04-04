@@ -76,9 +76,14 @@ document.addEventListener('DOMContentLoaded', () => {
         return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
     }
 
+
+
+
+
     function categoryExists(categoryName) {
         return !!document.querySelector(`[data-category="${categoryName.toLowerCase()}"]`);
     }
+
 
     const createBudgetData = async (categoryName, budget) => {
         const response = await fetch('/api/dashboard/budget', { // Make sure this is the correct endpoint
@@ -88,6 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
         })
     }
 
+
     // const updateBudgetData = async ()
 
     const createGoalData = async (categoryName, goal) => {
@@ -96,11 +102,14 @@ document.addEventListener('DOMContentLoaded', () => {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ name: categoryName, amount: goal }),
         })
+
         document.location.replace('/dashboard')
+
     }
 
 
-    function addNewCategory(categoryName, isDefault = false, budget, goal) {
+
+    function addNewCategory(categoryName, isDefault = false, budget , goal ) {
         categoryName = capitalizeFirstLetter(categoryName);
         if (!isDefault && categoryExists(categoryName)) {
             alert('Category already exists.');
@@ -153,9 +162,13 @@ document.addEventListener('DOMContentLoaded', () => {
             if (index !== -1) {
                 categoryBudgets[index] = parseFloat(newBudgetInput.value) || 0; // Update the budget array
             }
+
             initCharts()
             // createBudgetData(categoryName, newBudgetInput.value)
             //     .then(() => initCharts())
+
+
+
         });
 
         newGoalInput.addEventListener('blur', () => {
@@ -165,6 +178,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 categoryGoals[index] = parseFloat(newGoalInput.value) || 0;
                 console.log("Updated goals array: ", categoryGoals);
             }
+
             initCharts()
             // createGoalData(categoryName, newGoalInput.value)
             //     .then(() => initCharts())
@@ -186,6 +200,10 @@ document.addEventListener('DOMContentLoaded', () => {
             button.addEventListener('click', removeCategory);
         });
     }
+
+
+
+
 
     function removeCategory(event) {
         const getCategory = event.target.closest('.budget-item, .goal-item');
@@ -212,6 +230,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+
+
+    
     addCategoryBtn.addEventListener('click', () => {
         const categoryName = newCategoryNameInput.value.trim();
         if (categoryName) {
@@ -228,6 +249,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     attachRemoveEventListeners();
     initCharts();
+
 
 
 
@@ -250,8 +272,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 
+
     function init() {
         fetch('/api/user')
+
             .then(function (response) {
                 return response.json()
             }).then(function (data) {
@@ -268,16 +292,20 @@ document.addEventListener('DOMContentLoaded', () => {
                     categoryBudgets.push(budget.amount)
 
                     const budgetHtml = `
+
                 <div class="d-flex justify-content-between align-items-center mb-2 budget-item" data-category="${budget.id}">
                     <label class="form-label">${budget.name}:</label>
                     <div class="input-group">
                         <span class="input-group-text" style="color:#793842; font-weight:600;">$</span>
                         <input type="text" class="form-control money-input budget-input" placeholder="0.00" value="${budget.amount}" data-category="${budget.id}">
+
                         <button class="btn remove-budget-btn" id="${budget.name}" aria-label="Remove budget">
+
                             <i class="fas fa-times" style="color:red;"></i>
                         </button>
                     </div>
                 </div>`
+
                     budgetCategoriesDiv.insertAdjacentHTML('beforeend', budgetHtml);
 
                     const deletedBudgetBtn = document.getElementById(budget.name)
@@ -296,16 +324,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     categoryGoals.push(goal.amount)
                     const goalHtml = `
+
                 <div class="d-flex justify-content-between align-items-center mb-2 goal-item" data-category="${goal.id}">
                     <label class="form-label">${goal.name}:</label>
                     <div class="input-group">
                         <span class="input-group-text" style="color:#793842; font-weight:600;">$</span>
                         <input type="text" class="form-control money-input goal-input" placeholder="0.00" value="${goal.amount}" data-category="${goal.id}">
+
                         <button class="btn remove-goal-btn" id="${goal.name}" aria-label="Remove goal">
+
                             <i class="fas fa-times" style="color:red;"></i>
                         </button>
                     </div>
                 </div>`
+
 
 
                     goalCategoriesDivLeft.insertAdjacentHTML('beforeend', goalHtml);
@@ -329,6 +361,7 @@ document.addEventListener('DOMContentLoaded', () => {
             })
 
     }
+
 
     init()
     // initCharts()
