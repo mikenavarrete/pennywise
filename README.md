@@ -1,31 +1,25 @@
-# Scribella
+# Penny Wise
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## Description
-Scribella is an intuitive web-based note-taking application designed to help users efficiently capture and organize their thoughts, tasks, and information. With a focus on simplicity and a user-friendly interface, Scribella enables seamless creation, editing, and management of notes, making it an ideal tool for developers, writers, students, and anyone in need of a streamlined note-keeping solution.
+**Penny Wise** is a streamlined budgeting and financial goal-setting web application designed to help users manage their finances with ease. It enables users to track their spending across various categories and set specific financial targets, providing visual feedback through charts for a quick overview of financial health. Ideal for anyone looking to improve their financial discipline, Penny Wise offers a secure and intuitive platform to oversee and optimize personal finances, making money management accessible and straightforward.
 
 ## Table of Contents
 - [Usage](#usage)
 - [License](#license)
 - [Contributing](#contributing)
 - [Credits](#credits)
-- [Questions](#questions)
 
 ## Usage
-To use Scribella you only need to navigate [this link](https://scribella-804de12279f0.herokuapp.com/notes.html).
+To use Penny Wise you only need to navigate [this link](https://pennywise-47773ea2b3e1.herokuapp.com/).
 
-https://github.com/marphco/scribella/assets/5993166/b63d19a1-8840-483a-83c1-da92d736c15f
+### VIDEO OR SCREENSHOTS ###
 
 ## License
 This project is licensed under the [MIT](https://opensource.org/licenses/MIT) license.
 
 ## Contributing
-Contributions to Scribella are welcome! To contribute:
-1. Fork the repository.
-2. Create a new branch for your feature: `git checkout -b feature/your-feature-name`
-3. Commit your changes: `git commit -m 'Add some feature'`
-4. Push to the branch: `git push origin feature/your-feature-name`
-5. Submit a pull request.
+We welcome contributions to Penny Wise! If you have suggestions for improvements or bug fixes, please feel free to fork the repository and submit a pull request. Please ensure your code adheres to our project's coding standards and includes appropriate tests. For substantial changes, please open an issue first to discuss what you would like to change.
 
 ## Credits
 - [w3schools.com](https://w3schools.com)
@@ -33,9 +27,16 @@ Contributions to Scribella are welcome! To contribute:
 - [shields.io](https://shields.io/)
 - [npmjs.com](https://docs.npmjs.com/)
 - [stackoverflow.com](https://stackoverflow.com/questions/)
+- [chart.js](https://www.chartjs.org/docs/latest/)
 - [heroku.com](https://devcenter.heroku.com/categories/reference/)
 
-## Questions
-For any questions, please reach out via:
-- GitHub: [marphco](https://github.com/marphco)
-- Email: [marphco@gmail.com](mailto:marphco@gmail.com)
+**Penny Wise** was brought to life thanks to the collaborative effort of a dedicated team:
+
+- **Tamer Bekir**
+- **Marco Franco**
+- **Michael Navarrete**
+- **Julian Ortiz**
+
+Special thanks to all contributors who have invested their time and effort into making **Penny Wise** a valuable tool for everyone.
+
+
